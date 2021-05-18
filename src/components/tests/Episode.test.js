@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Episode from './../Episode';
+import App from '../../App';
+import userEvent from '@testing-library/user-event';
 
 const testEpisode = {
     id:1,
@@ -17,11 +19,18 @@ const testEpisodeWithoutImage = {
 }
 
 test("renders without error", () => {
-
+    const fakeFunc = jest.fn();
+    render(<App getData={fakeFunc}/>);
+    
 });
 
 test("renders the summury test passed as prop", ()=>{
-    
+    render(<App testEpisode={testEpisode}/>);
+    const butt = screen.getByRole("button");
+    userEvent.click(butt);
+    const summ = screen.queryByLabelText("summary");
+    expect(summ).not.toBeInTheDocument();
+    expect(summ).toBeFalsy();
 });
 
 test("renders default image when image is not defined", ()=>{
